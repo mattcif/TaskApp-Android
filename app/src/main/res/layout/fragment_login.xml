@@ -70,6 +70,7 @@
             android:layout_marginTop="4dp">
 
             <TextView
+                android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -77,6 +78,7 @@
                 android:textColor="@color/white"/>
 
             <TextView
+                android:id="@+id/btnRecover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -91,6 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminateTint="@color/white"
+            android:visibility="invisible"
+            tools:visibility="visible"
             />
 
     </LinearLayout>

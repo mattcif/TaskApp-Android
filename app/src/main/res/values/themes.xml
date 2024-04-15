@@ -5,6 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <item name="android:windowBackground">@color/color_default</item>
+        <item name="colorPrimary">@color/color_default</item>
+        <item name="colorPrimaryVariant">@color/color_default</item>
     </style>
 
     <style name="Theme.TaskApp" parent="Base.Theme.TaskApp" />
