@@ -40,5 +40,13 @@
                 android:id="@+id/action_loginFragment_to_recoverAccountFragment"
                 app:destination="@id/recoverAccountFragment" />
         </fragment>
+        <action
+            android:id="@+id/action_global_homeFragment"
+            app:destination="@id/homeFragment" />
     </navigation>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.taskapp.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>
