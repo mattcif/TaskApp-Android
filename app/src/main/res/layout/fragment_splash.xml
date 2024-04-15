@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.SplashFragment"
     android:gravity="center"
-    android:background="@color/color_default"
     >
 
 
