@@ -48,5 +48,14 @@
         android:id="@+id/homeFragment"
         android:name="com.example.taskapp.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_formTaskFragment"
+            app:destination="@id/formTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formTaskFragment"
+        android:name="com.example.taskapp.ui.FormTaskFragment"
+        android:label="fragment_form_task"
+        tools:layout="@layout/fragment_form_task" />
 </navigation>
