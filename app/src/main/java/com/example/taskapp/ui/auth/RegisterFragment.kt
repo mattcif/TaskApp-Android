@@ -12,6 +12,7 @@ import com.example.taskapp.databinding.FragmentLoginBinding
 import com.example.taskapp.databinding.FragmentRegisterBinding
 import com.example.taskapp.databinding.FragmentSplashBinding
 import com.example.taskapp.util.initToolbar
+import com.example.taskapp.util.showBottomSheet
 
 
 class RegisterFragment : Fragment() {
@@ -50,11 +51,10 @@ class RegisterFragment : Fragment() {
             if(password.isNotEmpty()) {
                 Toast.makeText(requireContext(), "Tudo Certo", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Preencha uma senha.", Toast.LENGTH_SHORT).show()
+                showBottomSheet(message = R.string.password_empty_register_fragment)
             }
         } else {
-            Toast.makeText(requireContext(), "Preencha um e-mail válido.", Toast.LENGTH_SHORT).show()
-
+            showBottomSheet(message = R.string.email_empty_register_fragment)
         }
     }
 

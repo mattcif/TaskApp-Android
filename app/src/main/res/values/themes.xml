@@ -20,4 +20,13 @@
     <style name="CustomRadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:buttonTint">@color/white</item>
     </style>
+
+
+    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>
