@@ -65,10 +65,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:background="@drawable/bg_edit_text"
+                style="@style/EditTextTheme"
                 android:hint="Digite seu e-mail"
                 android:inputType="textEmailAddress"
-                android:padding="16dp" />
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRecover"
