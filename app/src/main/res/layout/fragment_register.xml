@@ -28,7 +28,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Criar Conta"
+                    android:text="@string/text_title_toolbar_register_fragment"
                     android:textColor="@color/white"
                     android:layout_gravity="center_horizontal"/>
 
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="E-mail"
+                android:text="@string/email_text"
                 android:textColor="@color/white" />
 
             <EditText
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 style="@style/EditTextTheme"
                 android:layout_marginTop="4dp"
-                android:hint="Digite seu e-mail"
+                android:hint="@string/hint_edit_email"
                 android:inputType="textEmailAddress"
                  />
 
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Senha"
+                android:text="@string/password_text"
                 android:textColor="@color/white" />
 
             <EditText
@@ -80,7 +80,7 @@
                 style="@style/EditTextTheme"
 
                 android:layout_marginTop="4dp"
-                android:hint="Digite sua senha"
+                android:hint="@string/hint_edit_password"
                 android:inputType="textPassword"
                  />
 
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Criar Conta"
+                android:text="@string/text_button_register_fragment"
                 style="@style/ButtomTheme"
                 />
 
