@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.TodoFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTasks"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
@@ -16,9 +25,9 @@
         android:clickable="true"
         android:contentDescription="Botão adicionar nova tarefa"
         android:src="@drawable/ic_add"
-        app:shapeAppearance="@style/Widget.AppCompat.CompoundButton.RadioButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearance="@style/Widget.AppCompat.CompoundButton.RadioButton"
         app:tint="@color/color_default"
         app:useCompatPadding="false" />
 </androidx.constraintlayout.widget.ConstraintLayout>
