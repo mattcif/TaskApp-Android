@@ -35,7 +35,9 @@ class TodoFragment : Fragment() {
 
         initListeners()
 
-        initRecyclerView(getTasks())
+        initRecyclerView()
+
+        getTasks()
     }
 
     private fun initListeners() {
@@ -44,15 +46,19 @@ class TodoFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView(taskList: List<Task>) {
-        taskAdapter = TaskAdapter(requireContext(),taskList) { task, option ->
+    private fun initRecyclerView() {
+        taskAdapter = TaskAdapter(requireContext()) { task, option ->
             optionSelected(task, option)
 
         }
 
-        binding.rvTasks.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvTasks.setHasFixedSize(true)
-        binding.rvTasks.adapter = taskAdapter
+        with(binding.rvTasks) {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            adapter = taskAdapter
+        }
+
+
     }
 
 
@@ -76,13 +82,22 @@ class TodoFragment : Fragment() {
         }
     }
 
-    private fun getTasks() = listOf(
-        Task("0", "Criar nova tela do app", Status.TODO),
-        Task("1", "Validar informações na tela de login", Status.TODO),
-        Task("2", "Adicionar nova funcionalidade no app", Status.TODO),
-        Task("3", "Salvar token localmente", Status.TODO),
-        Task("4", "Criar funcionalidade de logout no app", Status.TODO),
-    )
+    private fun getTasks() {
+
+        val taskList = listOf(
+            Task("0", "Criar nova tela do app", Status.TODO),
+            Task("1", "Validar informações na tela de login", Status.TODO),
+            Task("2", "Adicionar nova funcionalidade no app", Status.TODO),
+            Task("3", "Salvar token localmente", Status.TODO),
+            Task("4", "Criar funcionalidade de logout no app", Status.TODO),
+        )
+
+        taskAdapter.submitList(taskList)
+
+
+    }
+
+
 
 
 
