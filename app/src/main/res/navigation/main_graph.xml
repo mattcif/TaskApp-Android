@@ -42,7 +42,9 @@
         </fragment>
         <action
             android:id="@+id/action_global_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
     </navigation>
     <fragment
         android:id="@+id/homeFragment"
