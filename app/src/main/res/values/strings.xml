@@ -35,6 +35,7 @@
     <string name="text_title_toolbar_recover_account_fragment">Recuperar Conta</string>
     <string name="text_button_toolbar_recover_account_fragment">Enviar</string>
     <string name="text_info_recover_account_fragment">Informe seu e-mail de cadastro para receber \num link para alteração da senha</string>
+    <string name="text_message_recover_account_fragment">Pronto, acabamos de enviar um link para o seu e-mail</string>
 
     <!-- Home Fragment -->
     <string name="text_title_dialog_confirm_logout">Deseja sair da sua conta ?</string>
