@@ -15,6 +15,7 @@
     <string name="password_text">Senha</string>
     <string name="password_empty">Preencha sua senha.</string>
     <string name="hint_edit_password">Digite sua senha</string>
+    <string name="error_generic">Ocorreu um erro! Por favor tente novamente mais tarde.</string>
 
     <!-- Login Fragment -->
     <string name="text_button_login_fragment">Login</string>
@@ -50,6 +51,7 @@
     <string name="text_status_form_task_fragment">Status</string>
     <string name="text_buttom_form_task_fragment">Salvar</string>
     <string name="hint_edit_description_form_task_fragment">Criar nova tela de login do app</string>
+    <string name="text_save_success_form_task_fragment">Tarefa salva com sucesso</string>
 
     <string name="description_empty_form_task_fragment">Preencha uma descrição</string>
 </resources>
