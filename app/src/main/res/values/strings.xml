@@ -60,4 +60,5 @@
     <string name="text_save_success_form_task_fragment">Tarefa salva com sucesso</string>
 
     <string name="description_empty_form_task_fragment">Preencha uma descrição</string>
+    <string name="text_toolbar_update_form_task_fragment">Editando tarefa…</string>
 </resources>
