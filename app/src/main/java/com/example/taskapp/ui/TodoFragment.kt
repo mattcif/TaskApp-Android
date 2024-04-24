@@ -13,6 +13,14 @@ import com.example.taskapp.data.model.Status
 import com.example.taskapp.data.model.Task
 import com.example.taskapp.databinding.FragmentTodoBinding
 import com.example.taskapp.ui.adapter.TaskAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class TodoFragment : Fragment() {
@@ -21,6 +29,10 @@ class TodoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var taskAdapter : TaskAdapter
+
+    private lateinit var reference: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +44,10 @@ class TodoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        reference = Firebase.database.reference
+        auth = Firebase.auth
+
 
         initListeners()
 
@@ -83,16 +99,26 @@ class TodoFragment : Fragment() {
     }
 
     private fun getTasks() {
+        reference
+            .child("tasks")
+            .child(auth.currentUser?.uid ?: "")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val taskList = mutableListOf<Task>()
+                    for (ds in snapshot.children) {
+                        val task = ds.getValue(Task::class.java) as Task
+                        taskList.add(task)
+                    }
+                    taskAdapter.submitList(taskList)
+                }
 
-        val taskList = listOf(
-            Task("0", "Criar nova tela do app", Status.TODO),
-            Task("1", "Validar informações na tela de login", Status.TODO),
-            Task("2", "Adicionar nova funcionalidade no app", Status.TODO),
-            Task("3", "Salvar token localmente", Status.TODO),
-            Task("4", "Criar funcionalidade de logout no app", Status.TODO),
-        )
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show()
+                }
 
-        taskAdapter.submitList(taskList)
+            })
+
+
 
 
     }
