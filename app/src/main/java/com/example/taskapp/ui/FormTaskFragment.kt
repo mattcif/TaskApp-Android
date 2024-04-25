@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.taskapp.R
@@ -35,6 +36,8 @@ class FormTaskFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var reference: DatabaseReference
+
+    private val viewModel: TaskViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,7 +102,7 @@ class FormTaskFragment : Fragment() {
         binding.rgStatus.check(
             when (task.status) {
                 Status.TODO -> R.id.rbTodo
-                Status.TODO -> R.id.rbDoing
+                Status.DOING -> R.id.rbDoing
                 else -> R.id.rbDone
             }
         )
@@ -141,7 +144,9 @@ class FormTaskFragment : Fragment() {
                     if (newTask) {
                         findNavController().popBackStack()
                     } else { // editando tarefa
+                        viewModel.setUpdateTask(task)
 
+                        binding.progressBar.isVisible = false
 
                     }
                 } else {
