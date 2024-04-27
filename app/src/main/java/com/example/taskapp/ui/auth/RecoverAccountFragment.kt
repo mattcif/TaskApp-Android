@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import com.example.taskapp.R
 import com.example.taskapp.databinding.FragmentRecoverAccountBinding
+import com.example.taskapp.ui.BaseFragment
 import com.example.taskapp.util.FirebaseHelper
 import com.example.taskapp.util.initToolbar
 import com.example.taskapp.util.showBottomSheet
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 
-class RecoverAccountFragment : Fragment() {
+class RecoverAccountFragment : BaseFragment() {
 
     private var _binding: FragmentRecoverAccountBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +31,6 @@ class RecoverAccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initToolbar(binding.toolbar)
 
-        auth = Firebase.auth
 
         initListener()
     }
@@ -53,6 +48,8 @@ class RecoverAccountFragment : Fragment() {
 
         if(email.isNotEmpty()){
 
+            hideKeyboard()
+
             binding.progressBar.isVisible = true
 
             recoverAccountUser(email)
@@ -63,7 +60,7 @@ class RecoverAccountFragment : Fragment() {
 
 
     private fun recoverAccountUser(email: String) {
-        auth.sendPasswordResetEmail(email)
+        FirebaseHelper.getAuth().sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 binding.progressBar.isVisible = false
 
