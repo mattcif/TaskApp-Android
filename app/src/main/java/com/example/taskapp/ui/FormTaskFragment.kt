@@ -54,6 +54,9 @@ class FormTaskFragment : Fragment() {
         initListener()
     }
 
+
+
+
     private fun getArgs() {
         args.task.let {
             if (it != null) {
@@ -72,7 +75,7 @@ class FormTaskFragment : Fragment() {
         }
 
         binding.rgStatus.setOnCheckedChangeListener { _, checkedId ->
-            status = when (id) {
+            status = when (checkedId) {
                 R.id.rbTodo -> Status.TODO
                 R.id.rbDoing -> Status.DOING
                 else -> Status.DONE

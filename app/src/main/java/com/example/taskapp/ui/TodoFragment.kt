@@ -32,8 +32,7 @@ class TodoFragment : Fragment() {
     private var _binding: FragmentTodoBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var taskAdapter : TaskAdapter
-
+    private lateinit var taskAdapter: TaskAdapter
 
 
     private val viewModel: TaskViewModel by activityViewModels()
@@ -72,7 +71,7 @@ class TodoFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.taskUpdate.observe(viewLifecycleOwner) { updateTask ->
-            if(updateTask.status == Status.TODO) {
+            if (updateTask.status == Status.TODO) {
 
                 // armazena a lista atual do adapter
                 val oldList = taskAdapter.currentList
@@ -111,7 +110,7 @@ class TodoFragment : Fragment() {
 
 
     private fun optionSelected(task: Task, option: Int) {
-        when(option) {
+        when (option) {
             TaskAdapter.SELECT_REMOVE -> {
                 showBottomSheet(
                     titleDialog = R.string.text_title_dialog_delete,
@@ -123,18 +122,23 @@ class TodoFragment : Fragment() {
 
                 )
             }
+
             TaskAdapter.SELECT_EDIT -> {
                 val action = HomeFragmentDirections
                     .actionHomeFragmentToFormTaskFragment(task)
                 findNavController().navigate(action)
 
             }
+
             TaskAdapter.SELECT_DETAILS -> {
-                Toast.makeText(requireContext(), "Detalhes ${task.description}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Detalhes ${task.description}", Toast.LENGTH_SHORT)
+                    .show()
 
             }
+
             TaskAdapter.SELECT_NEXT -> {
-                Toast.makeText(requireContext(), "Next ${task.description}", Toast.LENGTH_SHORT).show()
+                task.status = Status.DOING
+                updateTask(task)
 
             }
         }
@@ -149,7 +153,7 @@ class TodoFragment : Fragment() {
                     val taskList = mutableListOf<Task>()
                     for (ds in snapshot.children) {
                         val task = ds.getValue(Task::class.java) as Task
-                        if(task.status == Status.TODO) {
+                        if (task.status == Status.TODO) {
                             taskList.add(task)
                         }
                     }
@@ -162,12 +166,11 @@ class TodoFragment : Fragment() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT)
+                        .show()
                 }
 
             })
-
-
 
 
     }
@@ -178,28 +181,49 @@ class TodoFragment : Fragment() {
             .child(FirebaseHelper.getIdUser())
             .child(task.id)
             .removeValue().addOnCompleteListener { result ->
-                if(result.isSuccessful) {
-                    Toast.makeText(requireContext(), R.string.text_delete_success_task, Toast.LENGTH_SHORT).show()
+                if (result.isSuccessful) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.text_delete_success_task,
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 } else {
-                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
     }
 
+    private fun updateTask(task: Task) {
+        FirebaseHelper.getDatabase()
+            .child("tasks")
+            .child(FirebaseHelper.getIdUser())
+            .child(task.id)
+            .setValue(task).addOnCompleteListener { result ->
+                if (result.isSuccessful) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.text_update_success_form_task_fragment,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+    }
+
 
     private fun listEmpty(taskList: List<Task>) {
-        binding.texInfo.text = if(taskList.isEmpty()) {
+        binding.texInfo.text = if (taskList.isEmpty()) {
             getString(R.string.text_list_task_empty)
 
         } else {
             ""
         }
     }
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

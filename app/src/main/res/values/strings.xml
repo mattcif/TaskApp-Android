@@ -67,6 +67,7 @@
     <string name="text_buttom_form_task_fragment">Salvar</string>
     <string name="hint_edit_description_form_task_fragment">Criar nova tela de login do app</string>
     <string name="text_save_success_form_task_fragment">Tarefa salva com sucesso</string>
+    <string name="text_update_success_form_task_fragment">Tarefa atualizada com sucesso</string>
 
     <string name="description_empty_form_task_fragment">Preencha uma descrição</string>
     <string name="text_toolbar_update_form_task_fragment">Editando tarefa…</string>
