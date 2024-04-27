@@ -12,6 +12,7 @@ import com.example.taskapp.R
 import com.example.taskapp.databinding.FragmentLoginBinding
 import com.example.taskapp.databinding.FragmentRegisterBinding
 import com.example.taskapp.databinding.FragmentSplashBinding
+import com.example.taskapp.util.FirebaseHelper
 import com.example.taskapp.util.initToolbar
 import com.example.taskapp.util.showBottomSheet
 import com.google.firebase.auth.FirebaseAuth
@@ -83,8 +84,9 @@ class RegisterFragment : Fragment() {
                     binding.progressBar.isVisible = true
 
 
-                    Toast.makeText(requireContext(), task.exception?.message, Toast.LENGTH_SHORT)
-                        .show()
+                    showBottomSheet(
+                        message = getString(FirebaseHelper.validError(task.exception?.message.toString()))
+                    )
                 }
             }
     }
