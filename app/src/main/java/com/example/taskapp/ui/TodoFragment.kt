@@ -17,6 +17,7 @@ import com.example.taskapp.R
 import com.example.taskapp.data.model.Status
 import com.example.taskapp.data.model.Task
 import com.example.taskapp.databinding.FragmentTodoBinding
+import com.example.taskapp.ui.HomeFragmentDirections
 import com.example.taskapp.ui.adapter.TaskAdapter
 import com.example.taskapp.util.FirebaseHelper
 import com.example.taskapp.util.showBottomSheet
@@ -59,7 +60,10 @@ class TodoFragment : Fragment() {
 
         initRecyclerView()
 
-        getTasks()
+        observeViewModel()
+
+        viewModel.getTasks(Status.TODO)
+
     }
 
     private fun initListeners() {
@@ -68,11 +72,17 @@ class TodoFragment : Fragment() {
                 .actionHomeFragmentToFormTaskFragment(null)
             findNavController().navigate(action)
         }
-        observeViewModel()
 
     }
 
     private fun observeViewModel() {
+
+        viewModel.taskList.observe(viewLifecycleOwner) {taskList ->
+            binding.progressBar.isVisible = false
+            listEmpty(taskList)
+
+            taskAdapter.submitList(taskList)
+        }
 
         viewModel.taskInsert.observe(viewLifecycleOwner) { task ->
             if (task.status == Status.TODO) {
@@ -167,35 +177,6 @@ class TodoFragment : Fragment() {
         }
     }
 
-    private fun getTasks() {
-        FirebaseHelper.getDatabase()
-            .child("tasks")
-            .child(FirebaseHelper.getIdUser())
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val taskList = mutableListOf<Task>()
-                    for (ds in snapshot.children) {
-                        val task = ds.getValue(Task::class.java) as Task
-                        if (task.status == Status.TODO) {
-                            taskList.add(task)
-                        }
-                    }
-                    binding.progressBar.isVisible = false
-                    listEmpty(taskList)
-
-                    taskList.reverse()
-
-                    taskAdapter.submitList(taskList)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.i("INFOTESTE", "onCancelled:")
-                }
-
-            })
-
-
-    }
 
     private fun setPositionRecyclerView() {
         taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
