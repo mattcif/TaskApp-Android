@@ -28,7 +28,7 @@ class TaskViewModel : ViewModel() {
 
 
 
-    fun getTasks(status: Status) {
+    fun getTasks() {
 
         try {
 
@@ -42,9 +42,7 @@ class TaskViewModel : ViewModel() {
                         val taskList = mutableListOf<Task>()
                         for (ds in snapshot.children) {
                             val task = ds.getValue(Task::class.java) as Task
-                            if (task.status == status) {
-                                taskList.add(task)
-                            }
+                            taskList.add(task)
                         }
                         taskList.reverse()
                         _taskList.postValue(StateView.OnSuccess(taskList))

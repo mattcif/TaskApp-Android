@@ -52,7 +52,7 @@ class TodoFragment : Fragment() {
 
         observeViewModel()
 
-        viewModel.getTasks(Status.TODO)
+        viewModel.getTasks()
 
     }
 
@@ -68,16 +68,21 @@ class TodoFragment : Fragment() {
     private fun observeViewModel() {
 
         viewModel.taskList.observe(viewLifecycleOwner) { stateView ->
-            when(stateView) {
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
-                is StateView.OnSuccess -> {
-                    binding.progressBar.isVisible = false
-                    listEmpty(stateView.data ?: emptyList())
 
-                    taskAdapter.submitList(stateView.data)
+                is StateView.OnSuccess -> {
+
+                    val taskList = stateView.data?.filter { it.status == Status.TODO }
+
+                    binding.progressBar.isVisible = false
+                    listEmpty(taskList ?: emptyList())
+
+                    taskAdapter.submitList(taskList)
                 }
+
                 is StateView.OnError -> {
                     Toast.makeText(requireContext(), stateView.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.isVisible = false
@@ -85,18 +90,18 @@ class TodoFragment : Fragment() {
             }
 
 
-
         }
 
         viewModel.taskInsert.observe(viewLifecycleOwner) { stateView ->
-            when(stateView) {
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
+
                 is StateView.OnSuccess -> {
                     binding.progressBar.isVisible = false
 
-                    if(stateView.data?.status == Status.TODO) {
+                    if (stateView.data?.status == Status.TODO) {
                         // Armazena a lista atual do adapter
                         val oldList = taskAdapter.currentList
 
@@ -111,6 +116,7 @@ class TodoFragment : Fragment() {
                         setPositionRecyclerView()
                     }
                 }
+
                 is StateView.OnError -> {
                     Toast.makeText(requireContext(), stateView.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.isVisible = false
@@ -120,10 +126,11 @@ class TodoFragment : Fragment() {
 
         viewModel.taskUpdate.observe(viewLifecycleOwner) { stateView ->
 
-            when(stateView) {
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
+
                 is StateView.OnSuccess -> {
                     binding.progressBar.isVisible = false
 
@@ -132,8 +139,15 @@ class TodoFragment : Fragment() {
 
                     // gera uma nova lista a partir da lista antiga já com a tarefa atualizada
                     val newList = oldList.toMutableList().apply {
+                        if(!oldList.contains(stateView.data) && stateView.data?.status == Status.TODO){
+                            add(0, stateView.data)
+                            setPositionRecyclerView()
+                        }
+
+
                         if (stateView.data?.status == Status.TODO) {
-                            find { it.id == stateView.data.id }?.description = stateView.data.description
+                            find { it.id == stateView.data.id }?.description =
+                                stateView.data.description
                         } else {
                             remove(stateView.data)
                         }
@@ -149,6 +163,7 @@ class TodoFragment : Fragment() {
                     taskAdapter.notifyItemChanged(position)
 
                 }
+
                 is StateView.OnError -> {
                     Toast.makeText(requireContext(), stateView.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.isVisible = false
@@ -160,14 +175,19 @@ class TodoFragment : Fragment() {
 
         viewModel.taskDelete.observe(viewLifecycleOwner) { stateView ->
 
-            when(stateView) {
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
+
                 is StateView.OnSuccess -> {
                     binding.progressBar.isVisible = false
 
-                    Toast.makeText(requireContext(), R.string.text_delete_success_task, Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.text_delete_success_task,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
 
                     val oldList = taskAdapter.currentList
@@ -178,12 +198,12 @@ class TodoFragment : Fragment() {
                     taskAdapter.submitList(newList)
 
                 }
+
                 is StateView.OnError -> {
                     Toast.makeText(requireContext(), stateView.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.isVisible = false
                 }
             }
-
 
 
         }
