@@ -17,6 +17,7 @@ import com.example.taskapp.data.model.Task
 import com.example.taskapp.databinding.FragmentTodoBinding
 import com.example.taskapp.ui.adapter.TaskAdapter
 import com.example.taskapp.util.FirebaseHelper
+import com.example.taskapp.util.StateView
 import com.example.taskapp.util.showBottomSheet
 
 
@@ -66,11 +67,25 @@ class TodoFragment : Fragment() {
 
     private fun observeViewModel() {
 
-        viewModel.taskList.observe(viewLifecycleOwner) { taskList ->
-            binding.progressBar.isVisible = false
-            listEmpty(taskList)
+        viewModel.taskList.observe(viewLifecycleOwner) { stateView ->
+            when(stateView) {
+                is StateView.OnLoading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is StateView.OnSuccess -> {
+                    binding.progressBar.isVisible = false
+                    listEmpty(stateView.data ?: emptyList())
 
-            taskAdapter.submitList(taskList)
+                    taskAdapter.submitList(stateView.data)
+                }
+                is StateView.OnError -> {
+                    Toast.makeText(requireContext(), stateView.message, Toast.LENGTH_SHORT).show()
+                    binding.progressBar.isVisible = false
+                }
+            }
+
+
+
         }
 
         viewModel.taskInsert.observe(viewLifecycleOwner) { task ->
