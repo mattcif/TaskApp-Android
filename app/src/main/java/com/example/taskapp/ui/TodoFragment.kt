@@ -66,7 +66,7 @@ class TodoFragment : Fragment() {
 
     private fun observeViewModel() {
 
-        viewModel.taskList.observe(viewLifecycleOwner) {taskList ->
+        viewModel.taskList.observe(viewLifecycleOwner) { taskList ->
             binding.progressBar.isVisible = false
             listEmpty(taskList)
 
@@ -99,7 +99,7 @@ class TodoFragment : Fragment() {
             // gera uma nova lista a partir da lista antiga já com a tarefa atualizada
             val newList = oldList.toMutableList().apply {
                 if (updateTask.status == Status.TODO) {
-                    find {it.id == updateTask.id}?.description = updateTask.description
+                    find { it.id == updateTask.id }?.description = updateTask.description
                 } else {
                     remove(updateTask)
                 }
@@ -113,6 +113,19 @@ class TodoFragment : Fragment() {
 
             // Atualiza a tarefa pela posição do adapter
             taskAdapter.notifyItemChanged(position)
+        }
+
+        viewModel.taskDelete.observe(viewLifecycleOwner) { task ->
+            Toast.makeText(requireContext(), R.string.text_delete_success_task, Toast.LENGTH_SHORT)
+                .show()
+
+            val oldList = taskAdapter.currentList
+            val newList = oldList.toMutableList().apply {
+                remove(task)
+            }
+
+            taskAdapter.submitList(newList)
+
         }
     }
 
@@ -140,7 +153,7 @@ class TodoFragment : Fragment() {
                     message = getString(R.string.text_message_dialog_delete),
                     titleButtom = R.string.text_button_dialog_confirm,
                     onClick = {
-                        deleteTask(task)
+                        viewModel.deleteTask(task)
                     }
 
                 )
@@ -214,7 +227,6 @@ class TodoFragment : Fragment() {
             }
 
     }
-
 
 
     private fun listEmpty(taskList: List<Task>) {

@@ -27,6 +27,9 @@ class TaskViewModel : ViewModel() {
     private val _taskUpdate = MutableLiveData<Task>()
     val taskUpdate: LiveData<Task> = _taskUpdate
 
+    private val _taskDelete = MutableLiveData<Task>()
+    val taskDelete: LiveData<Task> = _taskDelete
+
 
 
     fun getTasks(status: Status) {
@@ -86,4 +89,20 @@ class TaskViewModel : ViewModel() {
                 }
             }
     }
+
+    fun deleteTask(task: Task) {
+        FirebaseHelper.getDatabase()
+            .child("tasks")
+            .child(FirebaseHelper.getIdUser())
+            .child(task.id)
+            .removeValue().addOnCompleteListener { result ->
+                if (result.isSuccessful) {
+                    _taskDelete.postValue(task)
+
+                }
+            }
+
+    }
+
+
 }
