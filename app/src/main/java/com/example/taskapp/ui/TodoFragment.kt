@@ -1,34 +1,23 @@
 package com.example.taskapp.ui
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.taskapp.R
 import com.example.taskapp.data.model.Status
 import com.example.taskapp.data.model.Task
 import com.example.taskapp.databinding.FragmentTodoBinding
-import com.example.taskapp.ui.HomeFragmentDirections
 import com.example.taskapp.ui.adapter.TaskAdapter
 import com.example.taskapp.util.FirebaseHelper
 import com.example.taskapp.util.showBottomSheet
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 
 class TodoFragment : Fragment() {
@@ -104,25 +93,26 @@ class TodoFragment : Fragment() {
         }
 
         viewModel.taskUpdate.observe(viewLifecycleOwner) { updateTask ->
-            if (updateTask.status == Status.TODO) {
+            // armazena a lista atual do adapter
+            val oldList = taskAdapter.currentList
 
-                // armazena a lista atual do adapter
-                val oldList = taskAdapter.currentList
-
-                // gera uma nova lista a partir da lista antiga já com a tarefa atualizada
-                val newList = oldList.toMutableList().apply {
-                    find { it.id == updateTask.id }?.description = updateTask.description
+            // gera uma nova lista a partir da lista antiga já com a tarefa atualizada
+            val newList = oldList.toMutableList().apply {
+                if (updateTask.status == Status.TODO) {
+                    find {it.id == updateTask.id}?.description = updateTask.description
+                } else {
+                    remove(updateTask)
                 }
-
-                // armazena a posição da tarefa a ser atualizada na lista
-                val position = newList.indexOfFirst { it.id == updateTask.id }
-
-                // Envia a lista atualizada para o adapter
-                taskAdapter.submitList(newList)
-
-                // Atualiza a tarefa pela posição do adapter
-                taskAdapter.notifyItemChanged(position)
             }
+
+            // armazena a posição da tarefa a ser atualizada na lista
+            val position = newList.indexOfFirst { it.id == updateTask.id }
+
+            // Envia a lista atualizada para o adapter
+            taskAdapter.submitList(newList)
+
+            // Atualiza a tarefa pela posição do adapter
+            taskAdapter.notifyItemChanged(position)
         }
     }
 
@@ -171,7 +161,7 @@ class TodoFragment : Fragment() {
 
             TaskAdapter.SELECT_NEXT -> {
                 task.status = Status.DOING
-                updateTask(task)
+                viewModel.updateTask(task)
 
             }
         }
@@ -225,24 +215,6 @@ class TodoFragment : Fragment() {
 
     }
 
-    private fun updateTask(task: Task) {
-        FirebaseHelper.getDatabase()
-            .child("tasks")
-            .child(FirebaseHelper.getIdUser())
-            .child(task.id)
-            .setValue(task).addOnCompleteListener { result ->
-                if (result.isSuccessful) {
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.text_update_success_form_task_fragment,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(requireContext(), R.string.error_generic, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-    }
 
 
     private fun listEmpty(taskList: List<Task>) {
