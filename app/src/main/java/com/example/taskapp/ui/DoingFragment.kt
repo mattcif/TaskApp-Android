@@ -53,25 +53,25 @@ class DoingFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.taskUpdate.observe(viewLifecycleOwner) { updateTask ->
-            if (updateTask.status == Status.DOING) {
-
-                // armazena a lista atual do adapter
-                val oldList = taskAdapter.currentList
-
-                // gera uma nova lista a partir da lista antiga já com a tarefa atualizada
-                val newList = oldList.toMutableList().apply {
-                    find { it.id == updateTask.id }?.description = updateTask.description
-                }
-
-                // armazena a posição da tarefa a ser atualizada na lista
-                val position = newList.indexOfFirst { it.id == updateTask.id }
-
-                // Envia a lista atualizada para o adapter
-                taskAdapter.submitList(newList)
-
-                // Atualiza a tarefa pela posição do adapter
-                taskAdapter.notifyItemChanged(position)
-            }
+//            if (updateTask.status == Status.DOING) {
+//
+//                // armazena a lista atual do adapter
+//                val oldList = taskAdapter.currentList
+//
+//                // gera uma nova lista a partir da lista antiga já com a tarefa atualizada
+//                val newList = oldList.toMutableList().apply {
+//                    find { it.id == updateTask.id }?.description = updateTask.description
+//                }
+//
+//                // armazena a posição da tarefa a ser atualizada na lista
+//                val position = newList.indexOfFirst { it.id == updateTask.id }
+//
+//                // Envia a lista atualizada para o adapter
+//                taskAdapter.submitList(newList)
+//
+//                // Atualiza a tarefa pela posição do adapter
+//                taskAdapter.notifyItemChanged(position)
+//            }
         }
     }
 
